@@ -1,9 +1,12 @@
+import { useNavigation } from "@react-navigation/native";
 import { useState } from "react";
 import { FlatList, StyleSheet, View } from 'react-native';
-import { Button, TextInput, Card, Text } from 'react-native-paper';
+import { Button, TextInput, Card, Text, IconButton } from 'react-native-paper';
+
 
 export default function SearchResults() {
     const apiUrl = process.env.EXPO_PUBLIC_API_URL;
+    const navigation = useNavigation();
 
     const [keyword, setKeyword] = useState('');
     // Lisää vielä searchTerm, joka määrittää haetaanko otsikon vai kirjailijan perusteella
@@ -52,13 +55,17 @@ export default function SearchResults() {
                         <Card.Content>
                             <Text variant="bodyMedium">{item.volumeInfo.authors}</Text>
                         </Card.Content>
+                        <Card.Actions>
+                            <IconButton
+                                icon='information-outline'
+                                onPress={() => navigation.navigate('BookInfo', { book: item.volumeInfo })} />
+                        </Card.Actions>
                     </Card>
                 }
             />
         </View>
     );
 }
-// Lisää card actions ja siitä yhteys lisätietoja-sivulle
 
 const styles = StyleSheet.create({
     container: {
