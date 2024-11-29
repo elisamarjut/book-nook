@@ -4,7 +4,7 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import HomeScreen from './screens/HomeScreen';
 import SearchScreen from './screens/SearchScreen';
-import BookshelfScreen from './screens/BookshelfScreen';
+import FavoritesScreen from './screens/FavoritesScreen';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
 const Tab = createBottomTabNavigator();
@@ -21,7 +21,7 @@ export default function App() {
               iconName = 'home';
             } else if (route.name === 'Search') {
               iconName = 'search';
-            } else if (route.name === 'Bookshelves') {
+            } else if (route.name === 'Favorites') {
               iconName = 'favorite';
             }
 
@@ -30,7 +30,7 @@ export default function App() {
         })}>
         <Tab.Screen name='Home' component={HomeScreen} />
         <Tab.Screen name='Search' component={SearchScreen} />
-        <Tab.Screen name='Bookshelves' component={BookshelfScreen} />
+        <Tab.Screen name='Favorites' component={FavoritesScreen} />
       </Tab.Navigator>
     </NavigationContainer>
     //<StatusBar style="auto" />
