@@ -1,7 +1,6 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
 import HomeScreen from './screens/HomeScreen';
 import SearchScreen from './screens/SearchScreen';
 import FavoritesScreen from './screens/FavoritesScreen';
@@ -32,17 +31,7 @@ export default function App() {
         <Tab.Screen name='Search' component={SearchScreen} />
         <Tab.Screen name='Favorites' component={FavoritesScreen} />
       </Tab.Navigator>
+      <StatusBar style="auto" />
     </NavigationContainer>
-    //<StatusBar style="auto" />
-
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
