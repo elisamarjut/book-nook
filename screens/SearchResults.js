@@ -1,6 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import { useState } from "react";
-import { FlatList, StyleSheet, View } from 'react-native';
+import { FlatList, StyleSheet, View, Keyboard } from 'react-native';
 import { Button, TextInput, Card, Text, IconButton } from 'react-native-paper';
 import { app } from "../firebaseConfig";
 import { getDatabase, ref, push } from "firebase/database";
@@ -23,6 +23,7 @@ export default function SearchResults() {
     const url = apiUrl + keyword + '&key=' + process.env.EXPO_PUBLIC_API_KEY;
 
     const handleFetch = () => {
+        Keyboard.dismiss();
         setLoading(true);
         fetch(url)
             .then(response => {
