@@ -68,7 +68,7 @@ export default function SearchResults() {
                     marginBottom: 10,
                     marginTop: 10,
                 }}
-                label="Enter keyword..."
+                label="Enter keyword"
                 value={keyword}
                 onChangeText={text => setKeyword(text)}
             />
