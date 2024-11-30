@@ -77,6 +77,7 @@ export default function SearchResults() {
                         <Card.Content>
                             <Text variant="bodyMedium">{item.volumeInfo.authors}</Text>
                         </Card.Content>
+                        <Card.Cover source={{ uri: item.volumeInfo.imageLinks.thumbnail }} />
                         <Card.Actions>
                             <IconButton
                                 icon='information-outline'
