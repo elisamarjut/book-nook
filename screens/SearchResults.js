@@ -5,8 +5,6 @@ import { Button, TextInput, Card, Text, IconButton } from 'react-native-paper';
 import { app } from "../firebaseConfig";
 import { getDatabase, ref, push } from "firebase/database";
 
-const database = getDatabase(app);
-
 export default function SearchResults() {
     const apiUrl = process.env.EXPO_PUBLIC_API_URL;
     const navigation = useNavigation();
