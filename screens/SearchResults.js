@@ -79,23 +79,27 @@ export default function SearchResults() {
             <FlatList
                 style={{ marginTop: 10, width: '90%' }}
                 data={books}
-                renderItem={({ item }) =>
-                    <Card style={{ marginBottom: 10 }}>
-                        <Card.Title title={item.volumeInfo.title} />
-                        <Card.Content>
-                            <Text variant="bodyMedium">{item.volumeInfo.authors}</Text>
-                        </Card.Content>
-                        <Card.Cover source={{ uri: item.volumeInfo.imageLinks.thumbnail }} />
-                        <Card.Actions>
-                            <IconButton
-                                icon='information-outline'
-                                onPress={() => navigation.navigate('BookInfo', { book: item.volumeInfo })} />
-                            <IconButton
-                                icon='heart-outline'
-                                onPress={() => saveToFavorites(item)} />
-                        </Card.Actions>
-                    </Card>
-                }
+                renderItem={({ item }) => {
+                    const { title, authors, imageLinks } = item.volumeInfo;
+                    const thumbnail = imageLinks?.thumbnail || 'No thumbnail available';
+                    return (
+                        <Card style={{ marginBottom: 10 }}>
+                            <Card.Title title={title || 'No title available'} />
+                            <Card.Content>
+                                <Text variant="bodyMedium">{authors || 'Unknown Author(s)'}</Text>
+                            </Card.Content>
+                            <Card.Cover source={{ uri: thumbnail }} />
+                            <Card.Actions>
+                                <IconButton
+                                    icon='information-outline'
+                                    onPress={() => navigation.navigate('BookInfo', { book: item.volumeInfo })} />
+                                <IconButton
+                                    icon='heart-outline'
+                                    onPress={() => saveToFavorites(item)} />
+                            </Card.Actions>
+                        </Card>
+                    );
+                }}
             />
         </View>
     );
