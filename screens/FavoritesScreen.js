@@ -1,6 +1,7 @@
 import { getDatabase, onValue, ref, remove } from 'firebase/database';
 import { useEffect, useState } from 'react';
-import { FlatList, StyleSheet, Text, View, Image, Button } from 'react-native';
+import { FlatList, StyleSheet, View } from 'react-native';
+import { Card, IconButton, Text } from 'react-native-paper';
 import { app } from "../firebaseConfig";
 
 export default function FavoritesScreen() {
@@ -42,26 +43,31 @@ export default function FavoritesScreen() {
 
     return (
         <View style={styles.container}>
-            <FlatList
-                style={{ marginTop: 10, width: '90%' }}
-                data={favorites}
-                keyExtractor={(item) => item.id} // using the id from firebase as key
-                renderItem={({ item }) => (
-                    <View style={styles.favoriteItem}>
-                        <Text style={styles.title}>{item.title}</Text>
-                        <Text>{item.authors.join(', ')}</Text>
-                        {item.thumbnail && (
-                            <Image
-                                source={{ uri: item.thumbnail }}
-                                style={{ width: 100, height: 150 }}
-                            />
-                        )}
-                        <Button
-                            title='Remove from favorites'
-                            onPress={() => removeFromFavorites(item.id)} />
-                    </View>
-                )}
-            />
+            {favorites.length === 0 ? (
+                <Text variant="bodyLarge" style={styles.noFavoritesText}>
+                    You have not favorited any books
+                </Text>
+            ) : (
+                <FlatList
+                    style={{ marginTop: 10, width: '90%' }}
+                    data={favorites}
+                    keyExtractor={(item) => item.id} // using the id from firebase as key
+                    renderItem={({ item }) => (
+                        <Card style={{ marginBottom: 10 }}>
+                            <Card.Title title={item.title} />
+                            <Card.Content>
+                                <Text variant="bodyMedium">{item.authors.join(', ')}</Text>
+                            </Card.Content>
+                            <Card.Cover source={{ uri: item.thumbnail }} />
+                            <Card.Actions>
+                                <IconButton
+                                    icon='trash-can-outline'
+                                    onPress={() => removeFromFavorites(item.id)} />
+                            </Card.Actions>
+                        </Card>
+                    )}
+                />
+            )}
         </View>
     );
 }
@@ -72,6 +78,12 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         alignItems: 'center',
         justifyContent: 'center',
+    },
+    noFavoritesText: {
+        textAlign: 'center',
+        marginTop: 20,
+        fontSize: 18,
+        color: '#555',
     },
     favoriteItem: {
         marginBottom: 20,
