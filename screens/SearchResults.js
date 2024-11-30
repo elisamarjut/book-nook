@@ -12,26 +12,33 @@ export default function SearchResults() {
     const database = getDatabase(app);
 
     const [keyword, setKeyword] = useState('');
-    // Lisää vielä searchTerm, joka määrittää haetaanko otsikon vai kirjailijan perusteella
-    // const [searchTerm, setSearchTerm] = useState('');
     const [books, setBooks] = useState([]);
     const [loading, setLoading] = useState(false);
-
+    const [error, setError] = useState(null);
 
     const url = apiUrl + keyword + '&key=' + process.env.EXPO_PUBLIC_API_KEY;
 
     const handleFetch = () => {
+        setError(null); // Clear any previous errors
         Keyboard.dismiss();
         setLoading(true);
         fetch(url)
             .then(response => {
-                if (!response)
+                if (!response.ok) // Check for HTTP errors
                     throw new Error("Error in fetch: " + response.statusText);
                 return response.json();
             })
-            .then(data => setBooks(data.items))
+            .then(data => {
+                if (!data.items || data.items.length === 0) {
+                    setError("No books found for the given keyword.");
+                    setBooks([]);
+                } else {
+                    setBooks(data.items)
+                }
+            })
             .catch(err => {
                 console.error(err);
+                setError("Failed to fetch books. Please try again later.");
             })
             .finally(() => setLoading(false))
     };
@@ -68,6 +75,7 @@ export default function SearchResults() {
             <Button loading={loading} mode="contained" icon="search-web" onPress={handleFetch}>
                 Search
             </Button>
+            {error && <Text style={styles.errorText}>{error}</Text>}
             <FlatList
                 style={{ marginTop: 10, width: '90%' }}
                 data={books}
@@ -99,5 +107,9 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         alignItems: 'center',
         justifyContent: 'center',
+    },
+    errorText: {
+        color: 'red',
+        marginTop: 10,
     },
 });
