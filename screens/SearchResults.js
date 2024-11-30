@@ -60,9 +60,9 @@ export default function SearchResults() {
                 style={{
                     width: '90%',
                     marginBottom: 10,
-                    marginTop: 10
+                    marginTop: 10,
                 }}
-                label="Keyword"
+                label="Enter keyword..."
                 value={keyword}
                 onChangeText={text => setKeyword(text)}
             />
