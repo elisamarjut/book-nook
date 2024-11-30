@@ -1,7 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import { useState } from "react";
 import { FlatList, StyleSheet, View, Keyboard } from 'react-native';
-import { Button, TextInput, Card, Text, IconButton } from 'react-native-paper';
+import { Button, TextInput, Card, Text, IconButton, Snackbar } from 'react-native-paper';
 import { app } from "../firebaseConfig";
 import { getDatabase, ref, push } from "firebase/database";
 
@@ -15,6 +15,7 @@ export default function SearchResults() {
     const [books, setBooks] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [snackBarVisible, setSnackBarVisible] = useState(false);
 
     const url = apiUrl + keyword + '&key=' + process.env.EXPO_PUBLIC_API_KEY;
 
@@ -54,6 +55,7 @@ export default function SearchResults() {
         push(ref(database, 'favorites/'), favoriteData)
             .then(() => {
                 console.log("Book saved to favorites!");
+                setSnackBarVisible(true);
             })
             .catch(err => {
                 console.error("Error saving book to favorites: ", err);
@@ -101,6 +103,12 @@ export default function SearchResults() {
                     );
                 }}
             />
+            <Snackbar
+                visible={snackBarVisible}
+                onDismiss={() => setSnackBarVisible(false)}
+                duration={3000}>
+                Book was added to favorites!
+            </Snackbar>
         </View>
     );
 }
