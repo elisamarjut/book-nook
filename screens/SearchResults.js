@@ -12,10 +12,11 @@ export default function SearchResults() {
 
     const [keyword, setKeyword] = useState('');
     const [snackBarVisible, setSnackBarVisible] = useState(false);
+    const [error, setError] = useState(null);
 
     const url = apiUrl + keyword + '&key=' + process.env.EXPO_PUBLIC_API_KEY;
 
-    const { books, loading, error, handleFetch } = useBooksFetch(url);
+    const { books, loading, error: fetchError, handleFetch } = useBooksFetch(url);
 
     const saveToFavorites = (book) => {
         const favoriteData = {
@@ -35,6 +36,20 @@ export default function SearchResults() {
             });
     };
 
+    const handleSearch = () => {
+        if (!keyword.trim()) {
+            setError("Please enter a keyword."); // Handle empty keyword error
+            return; // Skip fetch if keyword is empty
+        }
+
+        setError(null); // Clear error if keyword is valid
+        Keyboard.dismiss();
+        handleFetch(); // Call the fetch function to get books
+    }
+
+    // Display the appropriate error message
+    const displayError = error || fetchError;
+
     return (
         <View style={styles.container}>
             <TextInput
@@ -51,10 +66,10 @@ export default function SearchResults() {
                 loading={loading}
                 mode="contained"
                 icon="search-web"
-                onPress={() => { Keyboard.dismiss(); handleFetch(); }}>
+                onPress={handleSearch}>
                 Search
             </Button>
-            {error && <Text style={styles.errorText}>{error}</Text>}
+            {displayError && <Text style={styles.errorText}>{displayError}</Text>}
             <FlatList
                 style={{ marginTop: 10, width: '90%' }}
                 data={books}
