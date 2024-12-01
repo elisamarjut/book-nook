@@ -1,5 +1,5 @@
 import { PaperProvider } from 'react-native-paper';
-import SearchResults from './SearchResults';
+import SearchResults from '../components/SearchResults';
 import BookInfo from './BookInfo';
 import { StatusBar } from 'expo-status-bar';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
