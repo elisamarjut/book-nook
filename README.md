@@ -1,6 +1,12 @@
 # Book Nook README
 
-Book Nook is a project made for the Mobile Programming course at Haaga-Helia in fall 2024. With Book Nook, users with an account can search for books, review and save them to three different bookshelves: To read, Reading, Read. Users can browse books by genre, or search for books by author or title. The reviews and favorites are private to the user.
+Book Nook is a project made for the Mobile Programming course at Haaga-Helia in fall 2024. With Book Nook, users can search for books and save them to favorites. By typing in a text string to the search, the user can search for books containing this text string.
 
-## Created with
-Book Nook is created using Expo and React Native. The app uses Firebase Realtime Database and Firebase Authentication. The book data is fetched from [Google Books API](https://developers.google.com/books/docs/overview).
+## Technologies used
+### Main technologies
+Book Nook is created using Expo and React Native. The book data is fetched from [Google Books API](https://developers.google.com/books/docs/overview). The app uses Firebase Realtime Database for storing and retrieving user-favorite books.
+
+### Additional technologies 
+..* React Navigation, with a combination of tab navigation and stack navigation for a smooth navigation experience
+..* React Native Paper's material design components
+..* Custom hook to handle API requests for book data, showing an effective use of state and lifecycle management
