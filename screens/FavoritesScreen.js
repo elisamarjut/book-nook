@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import { Card, IconButton, Text } from 'react-native-paper';
 import { app } from "../firebaseConfig";
+import ShareFavoritesButton from '../components/ShareFavoritesButton';
 
 export default function FavoritesScreen() {
     const [favorites, setFavorites] = useState([]);
@@ -26,7 +27,7 @@ export default function FavoritesScreen() {
             }
         });
 
-        // Clean up the listener when the component is unmounted
+        // Clean up the listener
         return () => unsubscribe();
     }, [database]);
 
@@ -48,25 +49,28 @@ export default function FavoritesScreen() {
                     You have not favorited any books
                 </Text>
             ) : (
-                <FlatList
-                    style={{ marginTop: 10, width: '90%' }}
-                    data={favorites}
-                    keyExtractor={(item) => item.id} // using the id from firebase as key
-                    renderItem={({ item }) => (
-                        <Card style={{ marginBottom: 10 }}>
-                            <Card.Title title={item.title} />
-                            <Card.Content>
-                                <Text variant="bodyMedium">{item.authors.join(', ')}</Text>
-                            </Card.Content>
-                            <Card.Cover source={{ uri: item.thumbnail }} />
-                            <Card.Actions>
-                                <IconButton
-                                    icon='trash-can-outline'
-                                    onPress={() => removeFromFavorites(item.id)} />
-                            </Card.Actions>
-                        </Card>
-                    )}
-                />
+                <>
+                    <ShareFavoritesButton favorites={favorites} />
+                    <FlatList
+                        style={{ marginTop: 10, width: '90%' }}
+                        data={favorites}
+                        keyExtractor={(item) => item.id} // using the id from firebase as key
+                        renderItem={({ item }) => (
+                            <Card style={{ marginBottom: 10 }}>
+                                <Card.Title title={item.title} />
+                                <Card.Content>
+                                    <Text variant="bodyMedium">{item.authors.join(', ')}</Text>
+                                </Card.Content>
+                                <Card.Cover source={{ uri: item.thumbnail }} />
+                                <Card.Actions>
+                                    <IconButton
+                                        icon='trash-can-outline'
+                                        onPress={() => removeFromFavorites(item.id)} />
+                                </Card.Actions>
+                            </Card>
+                        )}
+                    />
+                </>
             )}
         </View>
     );
