@@ -1,48 +1,21 @@
-import { useNavigation } from "@react-navigation/native";
 import { useState } from "react";
 import { FlatList, StyleSheet, View, Keyboard } from 'react-native';
-import { Button, TextInput, Card, Text, IconButton, Snackbar } from 'react-native-paper';
+import { Button, TextInput, Text, Snackbar } from 'react-native-paper';
 import { app } from "../firebaseConfig";
 import { getDatabase, ref, push } from "firebase/database";
+import BookCard from "./BookCard";
+import useBooksFetch from "../hooks/useBooksFetch";
 
 export default function SearchResults() {
     const apiUrl = process.env.EXPO_PUBLIC_API_URL;
-    const navigation = useNavigation();
-
     const database = getDatabase(app);
 
     const [keyword, setKeyword] = useState('');
-    const [books, setBooks] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
     const [snackBarVisible, setSnackBarVisible] = useState(false);
 
     const url = apiUrl + keyword + '&key=' + process.env.EXPO_PUBLIC_API_KEY;
 
-    const handleFetch = () => {
-        setError(null); // Clear any previous errors
-        Keyboard.dismiss();
-        setLoading(true);
-        fetch(url)
-            .then(response => {
-                if (!response.ok) // Check for HTTP errors
-                    throw new Error("Error in fetch: " + response.statusText);
-                return response.json();
-            })
-            .then(data => {
-                if (!data.items || data.items.length === 0) {
-                    setError("No books found for the given keyword.");
-                    setBooks([]);
-                } else {
-                    setBooks(data.items)
-                }
-            })
-            .catch(err => {
-                console.error(err);
-                setError("Failed to fetch books. Please try again later.");
-            })
-            .finally(() => setLoading(false))
-    };
+    const { books, loading, error, handleFetch } = useBooksFetch(url);
 
     const saveToFavorites = (book) => {
         const favoriteData = {
@@ -72,36 +45,23 @@ export default function SearchResults() {
                 }}
                 label="Enter keyword"
                 value={keyword}
-                onChangeText={text => setKeyword(text)}
+                onChangeText={setKeyword}
             />
-            <Button loading={loading} mode="contained" icon="search-web" onPress={handleFetch}>
+            <Button
+                loading={loading}
+                mode="contained"
+                icon="search-web"
+                onPress={() => { Keyboard.dismiss(); handleFetch(); }}>
                 Search
             </Button>
             {error && <Text style={styles.errorText}>{error}</Text>}
             <FlatList
                 style={{ marginTop: 10, width: '90%' }}
                 data={books}
-                renderItem={({ item }) => {
-                    const { title, authors, imageLinks } = item.volumeInfo;
-                    const thumbnail = imageLinks?.thumbnail || 'No thumbnail available';
-                    return (
-                        <Card style={{ marginBottom: 10 }}>
-                            <Card.Title title={title || 'No title available'} />
-                            <Card.Content>
-                                <Text variant="bodyMedium">{authors || 'Unknown Author(s)'}</Text>
-                            </Card.Content>
-                            <Card.Cover source={{ uri: thumbnail }} />
-                            <Card.Actions>
-                                <IconButton
-                                    icon='information-outline'
-                                    onPress={() => navigation.navigate('BookInfo', { book: item.volumeInfo })} />
-                                <IconButton
-                                    icon='heart-outline'
-                                    onPress={() => saveToFavorites(item)} />
-                            </Card.Actions>
-                        </Card>
-                    );
-                }}
+                renderItem={({ item }) => (
+                    <BookCard book={item} saveToFavorites
+                        ={saveToFavorites} />
+                )}
             />
             <Snackbar
                 visible={snackBarVisible}
