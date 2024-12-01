@@ -4,9 +4,9 @@ Book Nook is a project made for the Mobile Programming course at Haaga-Helia in 
 
 ## Technologies used
 ### Main technologies
-Book Nook is created using Expo and React Native. The book data is fetched from [Google Books API](https://developers.google.com/books/docs/overview). The app uses Firebase Realtime Database for storing and retrieving user-favorite books.
+Book Nook is created using Expo and React Native. The book data is fetched from [Google Books API](https://developers.google.com/books/docs/overview). The app uses Firebase Realtime Database for storing and retrieving user-favorite books. React Navigation is used with a combination of tab navigation and stack navigation for a smooth navigation experience.
 
-### Additional technologies 
-* React Navigation, with a combination of tab navigation and stack navigation for a smooth navigation experience
+### Additional technologies
 * React Native Paper's material design components
 * Custom hook to handle API requests for book data, showing an effective use of state and lifecycle management
+* Expo Sharing library is used for sharing the favorite books as a list written in a text file
