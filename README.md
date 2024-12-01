@@ -9,4 +9,4 @@ Book Nook is created using Expo and React Native. The book data is fetched from 
 ### Additional technologies
 * React Native Paper's material design components
 * Custom hook to handle API requests for book data, showing an effective use of state and lifecycle management
-* Expo Sharing library is used for sharing the favorite books as a list written in a text file
+* Expo Sharing and Expo FileSystem libraries are used for sharing the favorite books as a list written in a text file
